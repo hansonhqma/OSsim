@@ -34,7 +34,7 @@ class Generator(object):
             return None
         cpu_bursts = math.ceil(100 * self.engine.drand48())
         intervals = []
-        for _ in range(cpu_bursts):
+        for _ in range(cpu_bursts - 1):
             cpu_burst_time = math.ceil(self.next_exp())
             io_time = math.ceil(self.next_exp()) * 10
             # TODO: Multiply by 10 if a CPU_BOUND process?
@@ -43,8 +43,11 @@ class Generator(object):
                 io_time/=4
             intervals.append(cpu_burst_time)
             intervals.append(io_time)
-        if io_bound:
-            intervals.pop()
+
+        cpu_burst_time = math.ceil(self.next_exp())
+        if not io_bound:
+           cpu_burst_time*=4
+        intervals.append(cpu_burst_time)
 
         return Process(initial_arrival_time, cpu_bursts, intervals, io_bound)
         
