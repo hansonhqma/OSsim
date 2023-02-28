@@ -40,7 +40,7 @@ class Generator(object):
             # TODO: Multiply by 10 if a CPU_BOUND process?
             if not io_bound:
                 cpu_burst_time*=4
-                io_time/=4
+                io_time//=4
             intervals.append(cpu_burst_time)
             intervals.append(io_time)
 
