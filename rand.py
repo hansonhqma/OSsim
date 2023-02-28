@@ -11,3 +11,6 @@ class rand48:
     
     def drand48(self) -> int:
         return self.__next() / self.__m
+
+    def seed(self) -> int:
+        return self.__n
