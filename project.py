@@ -41,9 +41,9 @@ if __name__ == '__main__':
     for i in range(n_processes):
         io_bound = i < n_processes - n_cpu
         if io_bound:
-            p = gen.next_process(False)
-        else:
             p = gen.next_process(True)
+        else:
+            p = gen.next_process(False)
         if p:
             processes.append(p)
         else:

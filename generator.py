@@ -11,12 +11,16 @@ class Generator(object):
     def next_exp(self) -> float:
         """
         exponential distribution as a function of random variable r
+        if next_exp > self.ubound, we continue generating numbers until we find one <= self.ubound
         """
 
         # uniform random variable to exponential
-        return -math.log(self.engine.drand48()) / self.lamda
+        out = self.ubound+1
+        while(out > self.ubound):
+            out = -math.log(self.engine.drand48()) / self.lamda
+        return out
     
-    def next_process(self, cpu_bound:bool):
+    def next_process(self, io_bound:bool):
         """
         @returns if next_exp() >= 0
                     new Process P with an initial arrival time and a number of cpu bursts, each of which
@@ -30,19 +34,19 @@ class Generator(object):
             return None
         cpu_bursts = math.ceil(100 * self.engine.drand48())
         intervals = []
-        for _ in range(cpu_bursts - 1):
+        for _ in range(cpu_bursts):
             cpu_burst_time = math.ceil(self.next_exp())
             io_time = math.ceil(self.next_exp()) * 10
             # TODO: Multiply by 10 if a CPU_BOUND process?
-            if cpu_bound:
+            if not io_bound:
                 cpu_burst_time*=4
                 io_time/=4
             intervals.append(cpu_burst_time)
             intervals.append(io_time)
-        cpu_burst_time = math.ceil(self.next_exp())
-        intervals.append(cpu_burst_time)
+        if io_bound:
+            intervals.pop()
 
-        return Process(initial_arrival_time, cpu_bursts, intervals)
+        return Process(initial_arrival_time, cpu_bursts, intervals, io_bound)
         
         
 
