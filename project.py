@@ -8,7 +8,25 @@
 
 import sys
 import rand
+import math
 from string import ascii_uppercase as process_id_set
+
+def next_exp_driver(engine : rand.rand48, lamda : float, ubound : float) -> float:
+    """
+    exponential distribution as a function of random variable r
+
+    returns 0 on hitting the upper bound TODO: not sure if this is how it should be implemented
+    """
+
+    # uniform random variable to exponential
+    out = -math.log(engine.drand48()) / lamda
+
+    if out < ubound:
+        return out
+    else:
+        return 0
+
+
 
 __ERROR_PROMPT = 'python3 project.py <n_proc> <n_cpu> <seed> <lambda> <ubound>'
 
@@ -34,6 +52,8 @@ if __name__ == '__main__':
 
     # rand
     rand48_engine = rand.rand48(rand48_seed)
+    next_exp = lambda : next_exp_driver(rand48_engine, exp_lambda, exp_ubound)
+    
 
     print("<<< PROJECT PART I -- process set (n={}) with {} CPU-bound process >>>".format(n_processes, n_cpu))
     
