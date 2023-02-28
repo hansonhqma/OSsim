@@ -2,7 +2,7 @@ class rand48:
     def __init__(self, seed:int) -> None:
         self.__a = 0x5DEECE66D
         self.__c = 0xB
-        self.__n = seed
+        self.__n = int(bin(seed)[2:].zfill(32) + bin(0x330E)[2:].zfill(16), 2)
         self.__m = 2**48
 
     def __next(self) -> int:

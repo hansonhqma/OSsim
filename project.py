@@ -2,38 +2,21 @@
 # 
 # Contrubibutors:
 # - mah11@rpi.edu
-# - 
+# - baught@rpi.edu
 # - 
 
 
 import sys
 import rand
 import math
+from generator import Generator
+from process import Process
 from string import ascii_uppercase as process_id_set
-
-def next_exp_driver(engine : rand.rand48, lamda : float, ubound : float) -> float:
-    """
-    exponential distribution as a function of random variable r
-
-    returns 0 on hitting the upper bound TODO: not sure if this is how it should be implemented
-    """
-
-    # uniform random variable to exponential
-    out = -math.log(engine.drand48()) / lamda
-
-    if out < ubound:
-        return out
-    else:
-        return 0
-
-
 
 __ERROR_PROMPT = 'python3 project.py <n_proc> <n_cpu> <seed> <lambda> <ubound>'
 
 
 if __name__ == '__main__':
-    
-
     # exec arg validation
     if not len(sys.argv) == 6:
         raise RuntimeError(__ERROR_PROMPT)
@@ -51,21 +34,20 @@ if __name__ == '__main__':
 
 
     # rand
-    rand48_engine = rand.rand48(rand48_seed)
-    next_exp = lambda : next_exp_driver(rand48_engine, exp_lambda, exp_ubound)
-    
-
+    gen = Generator(exp_lambda, exp_ubound, rand48_seed)
     print("<<< PROJECT PART I -- process set (n={}) with {} CPU-bound process >>>".format(n_processes, n_cpu))
     
-    
-    for proc_index in range(n_processes):
-        proc_id = process_id_set[proc_index]
-
-        io_bound = proc_index < n_processes - n_cpu
-
+    processes = [] 
+    for i in range(n_processes):
+        io_bound = i < n_processes - n_cpu
         if io_bound:
-            pass
-
+            p = gen.next_process(False)
         else:
-            pass
+            p = gen.next_process(True)
+        if p:
+            processes.append(p)
+        else:
+            i-=1
     
+    for i in range(len(processes)):
+        processes[i].print(process_id_set[i]) 
