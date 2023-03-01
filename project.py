@@ -3,12 +3,10 @@
 # Contrubibutors:
 # - mah11@rpi.edu
 # - baught@rpi.edu
-# - 
+# - malikr3@rpi.edu
 
 
 import sys
-import rand
-import math
 from generator import Generator
 from process import Process
 from string import ascii_uppercase as process_id_set
