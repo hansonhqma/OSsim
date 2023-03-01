@@ -60,7 +60,7 @@ if __name__ == '__main__':
 
     # rand
     gen = Generator(exp_lambda, exp_ubound, rand48_seed)
-    print("<<< PROJECT PART I -- process set (n={}) with {} CPU-bound process >>>".format(n_processes, n_cpu))
+    print("<<< PROJECT PART I -- process set (n={}) with {} CPU-bound {} >>>".format(n_processes, n_cpu, "process" if n_cpu == 1 else "processes" ))
     
     processes = [] 
     for i in range(n_processes):
