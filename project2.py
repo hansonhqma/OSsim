@@ -56,9 +56,9 @@ if __name__ == '__main__':
         print("ERROR: exp_ubound should be an integer.")
         exit(1)
     try:
-        tsc = int(sys.argv[6])
+        tcs = int(sys.argv[6])
     except:
-        print("ERROR: tsc shoudl be an integer")
+        print("ERROR: tcs shoudl be an integer")
         exit(1)
     
     try:
@@ -95,7 +95,7 @@ if __name__ == '__main__':
     for i in range(len(processes)):
         print(processes[i])
 
-    print("\n<<< PROJECT PART II -- process set (n={}) with {} CPU-bound {} >>>".format(n_processes, n_cpu, "process" if n_cpu == 1 else "processes" ))
+    print("\n<<< PROJECT PART II -- t_cs={}ms; alpha={}; t_slice={}ms >>>".format(tcs, alpha, tslice))
     # built processes array
     
     cpu = CPU(tcs)
