@@ -20,7 +20,7 @@ class Generator(object):
             out = -math.log(self.engine.drand48()) / self.lamda
         return out
     
-    def next_process(self, io_bound:bool):
+    def next_process(self, io_bound:bool, pid:str):
         """
         @returns a new Process P with an initial arrival time and a number of cpu bursts, each of which
                     has the same burst time. All io wait times for the process also have the same value.
@@ -42,7 +42,7 @@ class Generator(object):
            cpu_burst_time*=4
         intervals.append(cpu_burst_time)
 
-        return Process(initial_arrival_time, cpu_bursts, intervals, io_bound)
+        return Process(initial_arrival_time, cpu_bursts, intervals, io_bound, pid)
         
         
 

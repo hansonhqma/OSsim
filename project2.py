@@ -8,7 +8,7 @@
 
 import sys
 from generator import Generator
-from process import Process
+from cpu import CPU
 from string import ascii_uppercase as process_id_set
 
 __ERROR_PROMPT__ = "python3 project.py <n_proc: int> <n_cpu: int> <seed: int> <lambda: float> <ubound: int> <tcs: int> <alpha: float> <tslice: int>"
@@ -85,7 +85,7 @@ if __name__ == '__main__':
     for i in range(n_processes):
         io_bound = i < n_processes - n_cpu
         
-        p = gen.next_process(io_bound)
+        p = gen.next_process(io_bound, process_id_set[i])
         
         if p:
             processes.append(p)
@@ -93,3 +93,11 @@ if __name__ == '__main__':
             i-=1
     
     # built processes array
+    
+    cpu = CPU(tcs)
+    
+    # run algorithms
+    cpu.round_robin(processes, tslice)
+    cpu.fcfs(processes)
+    cpu.shortest_time_remaining(processes)
+    cpu.shortest_job_first(processes)
