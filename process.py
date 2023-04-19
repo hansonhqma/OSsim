@@ -24,7 +24,7 @@ class Process(object):
         print("--> CPU burst {}ms".format(self.intervals[-1]))
         
     def __str__(self):
-        return "Process {}:\n\tArrival time: {} ms\n\tCPU bursts: {}\n\tType: {}".format(\
-            self.pid, self.arrival_time, self.cpu_bursts, "I/O" if self.io_bound else "CPU")
+        return "{}-bound process {}: arrival time {}ms; {} CPU bursts".format(\
+            "I/O" if self.io_bound else "CPU", self.pid, self.arrival_time, self.cpu_bursts)
         
 

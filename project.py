@@ -64,7 +64,7 @@ if __name__ == '__main__':
     for i in range(n_processes):
         io_bound = i < n_processes - n_cpu
         
-        p = gen.next_process(io_bound)
+        p = gen.next_process(io_bound, process_id_set[i])
         
         if p:
             processes.append(p)
@@ -72,4 +72,4 @@ if __name__ == '__main__':
             i-=1
     
     for i in range(len(processes)):
-        processes[i].print(process_id_set[i]) 
+        processes[i].print() 

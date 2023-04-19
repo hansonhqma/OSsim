@@ -79,7 +79,6 @@ if __name__ == '__main__':
 
     # rand
     gen = Generator(exp_lambda, exp_ubound, rand48_seed)
-    print("<<< PROJECT PART II -- process set (n={}) with {} CPU-bound {} >>>".format(n_processes, n_cpu, "process" if n_cpu == 1 else "processes" ))
     
     processes = [] 
     for i in range(n_processes):
@@ -91,7 +90,12 @@ if __name__ == '__main__':
             processes.append(p)
         else:
             i-=1
-    
+
+    print("<<< PROJECT PART I -- process set (n={}) with {} CPU-bound {} >>>".format(n_processes, n_cpu, "process" if n_cpu == 1 else "processes" ))
+    for i in range(len(processes)):
+        print(processes[i])
+
+    print("\n<<< PROJECT PART II -- process set (n={}) with {} CPU-bound {} >>>".format(n_processes, n_cpu, "process" if n_cpu == 1 else "processes" ))
     # built processes array
     
     cpu = CPU(tcs)
