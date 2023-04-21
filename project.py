@@ -78,30 +78,47 @@ if __name__ == '__main__':
         exit(1)
 
     # rand
-    gen = Generator(exp_lambda, exp_ubound, rand48_seed)
+    # Fuck it
+    gen1 = Generator(exp_lambda, exp_ubound, rand48_seed)
+    gen2 = Generator(exp_lambda, exp_ubound, rand48_seed)
+    gen3 = Generator(exp_lambda, exp_ubound, rand48_seed)
+    gen4 = Generator(exp_lambda, exp_ubound, rand48_seed)
     
-    processes = [] 
+    processes1 = [] 
+    processes2 = [] 
+    processes3 = [] 
+    processes4 = [] 
     for i in range(n_processes):
         io_bound = i < n_processes - n_cpu
         
-        p = gen.next_process(io_bound, process_id_set[i])
+        p1 = gen1.next_process(io_bound, process_id_set[i])
+        p2 = gen2.next_process(io_bound, process_id_set[i])
+        p3 = gen3.next_process(io_bound, process_id_set[i])
+        p4 = gen4.next_process(io_bound, process_id_set[i])
         
-        if p:
-            processes.append(p)
+        if p1:
+            processes1.append(p1)
+            processes2.append(p2)
+            processes3.append(p3)
+            processes4.append(p4)
         else:
             i-=1
 
     print("<<< PROJECT PART I -- process set (n={}) with {} CPU-bound {} >>>".format(n_processes, n_cpu, "process" if n_cpu == 1 else "processes" ))
-    for i in range(len(processes)):
-        print(processes[i])
+    for i in range(len(processes1)):
+        print(processes1[i])
 
     print("\n<<< PROJECT PART II -- t_cs={}ms; alpha={}; t_slice={}ms >>>".format(tcs, alpha, tslice))
     # built processes array
     
     cpu = CPU(tcs, exp_lambda, alpha)
     
+    # Fuck it
     # run algorithms
-    #cpu.round_robin(processes, tslice)
-    cpu.fcfs(processes)
-    #cpu.shortest_time_remaining(processes)
-    #cpu.shortest_job_first(processes)
+    cpu.fcfs(processes1)
+    print()
+    cpu.shortest_job_first(processes2)
+    print()
+    cpu.shortest_time_remaining(processes4)
+    #print()
+    #cpu.round_robin(processes3, tslice)
