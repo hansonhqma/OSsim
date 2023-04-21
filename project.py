@@ -115,10 +115,10 @@ if __name__ == '__main__':
     
     # Fuck it
     # run algorithms
-    cpu.fcfs(processes1)
-    print()
-    cpu.shortest_job_first(processes2)
-    print()
-    cpu.shortest_time_remaining(processes4)
+    #cpu.fcfs(processes1)
+    #print()
+    #cpu.shortest_job_first(processes2)
+    #print()
+    cpu.srt2(processes4)
     #print()
     #cpu.round_robin(processes3, tslice)
