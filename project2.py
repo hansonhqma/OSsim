@@ -98,10 +98,10 @@ if __name__ == '__main__':
     print("\n<<< PROJECT PART II -- t_cs={}ms; alpha={}; t_slice={}ms >>>".format(tcs, alpha, tslice))
     # built processes array
     
-    cpu = CPU(tcs)
+    cpu = CPU(tcs, exp_lambda, alpha)
     
     # run algorithms
-    cpu.round_robin(processes, tslice)
-    cpu.fcfs(processes)
+    #cpu.round_robin(processes, tslice)
+    #cpu.fcfs(processes)
     cpu.shortest_time_remaining(processes)
-    cpu.shortest_job_first(processes)
+    #cpu.shortest_job_first(processes)
