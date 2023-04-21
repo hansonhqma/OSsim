@@ -12,6 +12,7 @@ class Process(object):
         self.cpu_bursts = cpu_bursts
         self.intervals = deepcopy(intervals)
         self.predicted_bursts = list()
+        self.intervals_completed = 0
         self.io_bound = io_bound
         self.pid = pid
         self.burst_index = 0
