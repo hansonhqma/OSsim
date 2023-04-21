@@ -10,6 +10,7 @@ class Process(object):
         self.arrival_time = arrival_time
         self.cpu_bursts = cpu_bursts
         self.intervals = deepcopy(intervals)
+        self.intervals_completed = 0
         self.io_bound = io_bound
         self.pid = pid
         
