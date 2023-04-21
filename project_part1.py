@@ -1,4 +1,4 @@
-# CSCI 4210 OS Simulation project part 2
+# CSCI 4210 OS Simulation project part 1
 # 
 # Contrubibutors:
 # - mah11@rpi.edu
@@ -8,16 +8,16 @@
 
 import sys
 from generator import Generator
-from cpu import CPU
+from process import Process
 from string import ascii_uppercase as process_id_set
 
-__ERROR_PROMPT__ = "python3 project.py <n_proc: int> <n_cpu: int> <seed: int> <lambda: float> <ubound: int> <tcs: int> <alpha: float> <tslice: int>"
+__ERROR_PROMPT = "python3 project.py <n_proc: int> <n_cpu: int> <seed: int> <lambda: float> <ubound: int>"
 
 
 if __name__ == '__main__':
     # exec arg validation
-    if not len(sys.argv) == 9:
-        print("ERROR: USAGE:", __ERROR_PROMPT__)
+    if not len(sys.argv) == 6:
+        print("ERROR: USAGE:", __ERROR_PROMPT)
         exit(1)
 
     # Runtime vars
@@ -26,10 +26,6 @@ if __name__ == '__main__':
     rand48_seed = 0
     exp_lambda = 0.0
     exp_ubound = 0
-    tcs = 0
-    alpha = 0
-    tslice = 0
-    
     try:
         n_processes = int(sys.argv[1])
     except:
@@ -55,23 +51,6 @@ if __name__ == '__main__':
     except:
         print("ERROR: exp_ubound should be an integer.")
         exit(1)
-    try:
-        tcs = int(sys.argv[6])
-    except:
-        print("ERROR: tcs shoudl be an integer")
-        exit(1)
-    
-    try:
-        alpha = float(sys.argv[7])
-    except:
-        print("ERROR: alpha should be float")
-        exit(1)
-    
-    try:
-        tslice = int(sys.argv[8])
-    except:
-        print("ERROR: tslice should be int")
-        exit(1)
 
     if n_cpu > n_processes:
         print("ERROR: n_proc >= n_cpu")
@@ -79,6 +58,7 @@ if __name__ == '__main__':
 
     # rand
     gen = Generator(exp_lambda, exp_ubound, rand48_seed)
+    print("<<< PROJECT PART I -- process set (n={}) with {} CPU-bound {} >>>".format(n_processes, n_cpu, "process" if n_cpu == 1 else "processes" ))
     
     processes = [] 
     for i in range(n_processes):
@@ -90,18 +70,6 @@ if __name__ == '__main__':
             processes.append(p)
         else:
             i-=1
-
-    print("<<< PROJECT PART I -- process set (n={}) with {} CPU-bound {} >>>".format(n_processes, n_cpu, "process" if n_cpu == 1 else "processes" ))
+    
     for i in range(len(processes)):
-        print(processes[i])
-
-    print("\n<<< PROJECT PART II -- t_cs={}ms; alpha={}; t_slice={}ms >>>".format(tcs, alpha, tslice))
-    # built processes array
-    
-    cpu = CPU(tcs, exp_lambda, alpha)
-    
-    # run algorithms
-    #cpu.round_robin(processes, tslice)
-    #cpu.fcfs(processes)
-    cpu.shortest_time_remaining(processes)
-    #cpu.shortest_job_first(processes)
+        processes[i].print() 
