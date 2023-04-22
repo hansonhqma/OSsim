@@ -121,4 +121,4 @@ if __name__ == '__main__':
     #print()
     cpu.shortest_time_remaining(processes3)
     #print()
-    #cpu.round_robin(processes4, tslice)
+    cpu.round_robin(processes4, tslice)
