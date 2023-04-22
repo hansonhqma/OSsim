@@ -52,13 +52,19 @@ class CPU:
                 # Context switch in next process
                 self.time += self.__tcs__//2
                 current_process = ready_q.pop(0)
-                print("time {}ms: Process {} started using the CPU for remaining {}ms of {}ms burst {}".format( self.time, current_process.pid, current_process.this_burst(),current_process.this_og_burst(),  self.__printreadyqueueFCFS__(ready_q))) if self.time <= 9999 else None
+                if current_process.this_burst() == current_process.this_og_burst():
+                    print("time {}ms: Process {} started using the CPU for {}ms burst {}".format( self.time, current_process.pid, current_process.this_burst(),  self.__printreadyqueueFCFS__(ready_q))) if self.time <= 9999 else None
+                else:
+                    print("time {}ms: Process {} started using the CPU for remaining {}ms of {}ms burst {}".format( self.time, current_process.pid, current_process.this_burst(),current_process.this_og_burst(),  self.__printreadyqueueFCFS__(ready_q))) if self.time <= 9999 else None
                 next_quantum = self.time + quantum
             elif not current_process:
                 # Context switch in next process
                 self.time += self.__tcs__//2
                 current_process = ready_q.pop(0)
-                print("time {}ms: Process {} started using the CPU for remaining {}ms of {}ms burst {}".format( self.time, current_process.pid, current_process.this_burst(), current_process.this_og_burst(), self.__printreadyqueueFCFS__(ready_q))) if self.time <= 9999 else None
+                if current_process.this_burst() == current_process.this_og_burst():
+                    print("time {}ms: Process {} started using the CPU for {}ms burst {}".format( self.time, current_process.pid, current_process.this_burst(), self.__printreadyqueueFCFS__(ready_q))) if self.time <= 9999 else None
+                else:
+                    print("time {}ms: Process {} started using the CPU for remaining {}ms of {}ms burst {}".format( self.time, current_process.pid, current_process.this_burst(), current_process.this_og_burst(), self.__printreadyqueueFCFS__(ready_q))) if self.time <= 9999 else None
                 next_quantum = self.time + quantum
             # Current process cannot be None at this point
             # Run current process until next quantum or next arrival 
@@ -102,6 +108,10 @@ class CPU:
                         # Context switch in the new process
                         self.time += self.__tcs__//2
                         current_process = ready_q.pop(0)
+                        if current_process.this_burst() == current_process.this_og_burst():
+                            print("time {}ms: Process {} started using the CPU for {}ms burst {}".format( self.time, current_process.pid, current_process.this_burst(), self.__printreadyqueueFCFS__(ready_q))) if self.time <= 9999 else None
+                        else:
+                            print("time {}ms: Process {} started using the CPU for remaining {}ms of {}ms burst {}".format( self.time, current_process.pid, current_process.this_burst(), current_process.this_og_burst(), self.__printreadyqueueFCFS__(ready_q))) if self.time <= 9999 else None
                         print("time {}ms: Process {} started using the CPU for remaining {}ms of {}ms burst {}".format( self.time, current_process.pid, current_process.this_burst(), current_process.this_og_burst(),  self.__printreadyqueueFCFS__(ready_q))) if self.time <= 9999 else None
                     next_quantum = self.time + quantum
             else:
