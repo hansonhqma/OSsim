@@ -11,6 +11,7 @@ class Process(object):
         self.arrival_time = arrival_time
         self.cpu_bursts = cpu_bursts
         self.intervals = deepcopy(intervals)
+        self.og_intervals = deepcopy(intervals)
         self.predicted_bursts = list()
         self.intervals_completed = 0
         self.io_bound = io_bound
@@ -25,6 +26,10 @@ class Process(object):
             else:
                 self.predicted_bursts.append(ceil(alpha * self.intervals[i-2]   +  (1-alpha)  *  self.predicted_bursts[-1]))
         self.og_predicted_bursts = deepcopy(self.predicted_bursts)
+    def this_og_burst(self):
+        if self.burst_index > len(self.predicted_bursts) - 1:
+            raise IndexError("Process has completed bursts.")
+        return self.og_intervals[2*self.burst_index] 
     def this_burst(self):
         if self.burst_index > len(self.predicted_bursts) - 1:
             raise IndexError("Process has completed bursts.")
