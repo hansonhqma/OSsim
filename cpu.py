@@ -357,7 +357,6 @@ class CPU:
                                 print("time {}ms: Process {} (tau {}ms) arrived; preempting {} {}".format(p.arrival_time, p.pid, p.this_tau(), current_process.pid, self.__printreadyqueue__(ready_q))) if self.time <= 9999 else None
                             else:
                                 print("time {}ms: Process {} (tau {}ms) completed I/O; preempting {} {}".format(p.arrival_time, p.pid, p.this_tau(), current_process.pid, self.__printreadyqueue__(ready_q))) if self.time <= 9999 else None
-                            current_process = None
                         else:
                             if p.burst_index == 0:
                                 print("time {}ms: Process {} (tau {}ms) arrived; added to ready queue {}".format(p.arrival_time, p.pid, p.this_tau(), self.__printreadyqueue__(ready_q))) if self.time <= 9999 else None
