@@ -21,6 +21,7 @@ class CPU:
         arrival_q = sorted(process_list, key=lambda p: (p.arrival_time,p.pid),  reverse=True)
         ready_q = []
         current_process = None
+        next_quantum = 0
         while len(arrival_q) != 0 or len(ready_q) != 0:
             # Get next arrivals if at the next arrival time
             if len(arrival_q) > 0 and self.time == arrival_q[-1].arrival_time:
@@ -48,16 +49,19 @@ class CPU:
                 self.time += self.__tcs__//2
                 _, _, current_process = heappop(ready_q)
                 print("time {}ms: Process {} started using the CPU for {}ms burst {}".format( self.time, current_process.pid, current_process.this_burst(), self.__printreadyqueue__(ready_q))) if self.time <= 9999 else None
+                next_quantum = self.time + quantum
             elif not current_process:
                 # Context switch in next process
                 self.time += self.__tcs__//2
                 _, _, current_process = heappop(ready_q)
                 print("time {}ms: Process {} started using the CPU for {}ms burst {}".format( self.time, current_process.pid, current_process.this_burst(), self.__printreadyqueue__(ready_q))) if self.time <= 9999 else None
+                next_quantum = self.time + quantum
             # Current process cannot be None at this point
             # Run current process until next quantum or next arrival 
-            if len(arrival_q) == 0 or self.time + quantum <= arrival_q[-1].arrival_time:
-                self.time += min(quantum, current_process.this_burst())
-                current_process.run(quantum)
+            if len(arrival_q) == 0 or next_quantum <= arrival_q[-1].arrival_time:
+                run_time = next_quantum - self.time
+                self.time = min(next_quantum, self.time + current_process.this_burst())
+                current_process.run(run_time)
                 # Check if process will complete before end of next quantum
                 if current_process.this_burst() <= 0:
                     # Process finishes using the CPU and context switches with the next process
@@ -95,9 +99,11 @@ class CPU:
                         self.time += self.__tcs__//2
                         _,_, current_process = heappop(ready_q) 
                         print("time {}ms: Process {} started using the CPU for {}ms burst {}".format( self.time, current_process.pid, current_process.this_burst(), self.__printreadyqueue__(ready_q))) if self.time <= 9999 else None
+                    next_quantum = self.time + quantum
             else:
+                run_time = arrival_q[-1].arrival_time - self.time
                 self.time = min(arrival_q[-1].arrival_time, self.time + current_process.this_burst())
-                current_process.run(arrival_q[-1].arrival_time - self.time)
+                current_process.run(run_time)
                 # Check if process will complete before end of next quantum
                 if current_process.this_burst() <= 0:
                     # Process finishes using the CPU and context switches with the next process
@@ -343,6 +349,7 @@ class CPU:
                     # Add all arrivals to ready q and consider pre-emption
                     preempted = False
                     for p in next_arrivals:
+                        heappush(ready_q, (p.this_tau(), p.pid, p))
                         if current_process and not preempted and (p.this_tau() < current_process.this_tau() or (p.this_tau() == current_process.this_tau() and p.pid < current_process.pid)):
                             # Pre-empt the current process
                             preempted = True
@@ -350,16 +357,15 @@ class CPU:
                                 print("time {}ms: Process {} (tau {}ms) arrived; preempting {} {}".format(p.arrival_time, p.pid, p.this_tau(), current_process.pid, self.__printreadyqueue__(ready_q))) if self.time <= 9999 else None
                             else:
                                 print("time {}ms: Process {} (tau {}ms) completed I/O; preempting {} {}".format(p.arrival_time, p.pid, p.this_tau(), current_process.pid, self.__printreadyqueue__(ready_q))) if self.time <= 9999 else None
-                            heappush(ready_q, (current_process.this_tau(), current_process.pid, current_process))
-                            current_process = None
                         else:
                             if p.burst_index == 0:
                                 print("time {}ms: Process {} (tau {}ms) arrived; added to ready queue {}".format(p.arrival_time, p.pid, p.this_tau(), self.__printreadyqueue__(ready_q))) if self.time <= 9999 else None
                             else:
                                 print("time {}ms: Process {} (tau {}ms) completed I/O; added to ready queue {}".format(p.arrival_time, p.pid, p.this_tau(), self.__printreadyqueue__(ready_q))) if self.time <= 9999 else None
-                        heappush(ready_q, (p.this_tau(), p.pid, p))
                     if preempted:
                         # Accunt for context switch from former process during preemption
+                        heappush(ready_q, (current_process.this_tau(), current_process.pid, current_process))
+                        current_process = None
                         self.time += self.__tcs__//2
                     if not current_process:
                         # Context switch in as soon as the process arrives if nothing is in the CPU
