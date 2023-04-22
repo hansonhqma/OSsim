@@ -32,11 +32,17 @@ if __name__ == '__main__':
     
     try:
         n_processes = int(sys.argv[1])
+        if n_processes < 1 or n_processes > 26:
+            print("ERROR: n_processes should be >= 1 <= 26")
+            exit(1)
     except:
         print("ERROR: n_processes should be an integer.")
         exit(1)
     try:
         n_cpu = int(sys.argv[2])
+        if n_cpu < 0 or n_cpu > n_processes:
+            print("ERROR: n_processes should be >= 1 <= 26")
+            exit(1)
     except:
         print("ERROR: n_cpu should be an integer.")
         exit(1)
@@ -47,28 +53,43 @@ if __name__ == '__main__':
         exit(1)
     try:
         exp_lambda = float(sys.argv[4])
+        if exp_lambda < 0:
+            print("ERROR: n_processes should be >= 1 <= 26")
+            exit(1)
     except:
         print("ERROR: exp_lambda should be a float/double.")
         exit(1)
     try:
         exp_ubound = int(sys.argv[5])
+        if exp_ubound < 1:
+            print("ERROR: n_processes should be >= 1 <= 26")
+            exit(1)
     except:
         print("ERROR: exp_ubound should be an integer.")
         exit(1)
     try:
         tcs = int(sys.argv[6])
+        if tcs < 0 or tcs%2 ==1 :
+            print("ERROR: n_processes should be >= 1 <= 26")
+            exit(1)
     except:
-        print("ERROR: tcs shoudl be an integer")
+        print("ERROR: tcs should be an integer")
         exit(1)
     
     try:
         alpha = float(sys.argv[7])
+        if alpha < 0:
+            print("ERROR: n_processes should be >= 1 <= 26")
+            exit(1)
     except:
         print("ERROR: alpha should be float")
         exit(1)
     
     try:
         tslice = int(sys.argv[8])
+        if tslice < 0:
+            print("ERROR: n_processes should be >= 1 <= 26")
+            exit(1)
     except:
         print("ERROR: tslice should be int")
         exit(1)
@@ -108,7 +129,7 @@ if __name__ == '__main__':
     for i in range(len(processes1)):
         print(processes1[i])
 
-    print("\n<<< PROJECT PART II -- t_cs={}ms; alpha={}; t_slice={}ms >>>".format(tcs, alpha, tslice))
+    print("\n<<< PROJECT PART II -- t_cs={}ms; alpha={:.2f}; t_slice={}ms >>>".format(tcs, alpha, tslice))
     # built processes array
     
     cpu = CPU(tcs, exp_lambda, alpha)
@@ -122,3 +143,4 @@ if __name__ == '__main__':
     cpu.shortest_time_remaining(processes3)
     print()
     cpu.round_robin(processes4, tslice)
+    
