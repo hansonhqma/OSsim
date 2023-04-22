@@ -119,6 +119,6 @@ if __name__ == '__main__':
     #print()
     #cpu.shortest_job_first(processes2)
     #print()
-    cpu.srt2(processes4)
+    #cpu.shortest_time_remaining(processes3)
     #print()
-    #cpu.round_robin(processes3, tslice)
+    cpu.round_robin(processes4, tslice)
