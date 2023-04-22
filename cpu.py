@@ -22,7 +22,7 @@ class CPU:
         ready_q = []
         current_process = None
         next_quantum = 0
-        while len(arrival_q) != 0 or len(ready_q) != 0:
+        while current_process or len(arrival_q) != 0 or len(ready_q) != 0:
             # Get next arrivals if at the next arrival time
             if len(arrival_q) > 0 and self.time == arrival_q[-1].arrival_time:
                 next_arrivals = self.get_next_arrivals(arrival_q)
